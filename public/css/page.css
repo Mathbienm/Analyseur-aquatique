@@ -24,7 +24,6 @@ swiper-slide {
     text-align: center;
     font-size: 18px;
     background: #569DAA;
-    display: grid;
     border-radius: 50px;
     justify-content: center;
     padding-top: 10px;
@@ -50,13 +49,14 @@ swiper-slide img {
 .div-padding{
     padding-inline: 10px;
     display: flex;
+    justify-content: center;
     gap: 10px;
 }
 
 .export-csv-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #3c444c;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -67,10 +67,26 @@ swiper-slide img {
 }
 
 .export-csv-button:hover {
-    background-color: #45a049;
+    background-color: #344c5e;
 }
 
+.modifier-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3c444c;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-
-
-
+.modifier-button:hover {
+    background-color: #344c5e;
+}
+.img_zizi{
+    width: 70px;
+    height: 70px;
+}
