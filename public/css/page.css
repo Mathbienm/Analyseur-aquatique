@@ -8,11 +8,6 @@ body {
     background-size: cover;
 }
 
-html,
-body {
-    position: relative;
-    height: 100%;
-}
 
 
 swiper-container {
@@ -32,6 +27,7 @@ swiper-slide {
     font-weight: 500;
     font-style: normal;
     shape-rendering: 5px;
+    padding-bottom: 30px;
 }
 
 swiper-slide img {
@@ -86,7 +82,48 @@ swiper-slide img {
 .modifier-button:hover {
     background-color: #344c5e;
 }
+
 .img_zizi{
     width: 70px;
     height: 70px;
 }
+
+/* Style de la fenêtre modale */
+.modal {
+    display: none; /* Par défaut, la fenêtre modale est masquée */
+    position: fixed; /* Positionnement fixe pour la garder au-dessus du contenu */
+    z-index: 5; /* Mettre la fenêtre modale au-dessus de tout le reste */
+    left: 0;
+    top: 0;
+    width: 100%; /* La fenêtre modale prend toute la largeur de l'écran */
+    height: 100%; /* La fenêtre modale prend toute la hauteur de l'écran */
+    overflow: auto; /* Permettre le défilement si la fenêtre modale est plus grande que l'écran */
+    background-color: rgba(0,0,0,0.4); /* Fond semi-transparent */
+}
+
+/* Contenu de la fenêtre modale */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 15% du haut et centré horizontalement */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 10%; /* Largeur de la fenêtre modale */
+    border-radius: 30px;
+    text-align: center;
+}
+
+/* Bouton de fermeture */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
