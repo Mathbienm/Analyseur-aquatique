@@ -125,3 +125,7 @@ swiper-slide img {
     cursor: pointer;
 }
 
+.canva {
+    width: 100% !important;
+    height: 100% !important;
+ }

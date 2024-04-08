@@ -17,16 +17,19 @@
         </div>
     </div>
 
-    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" slides-per-view="3" space-between="30" free-mode="true">
+    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" slides-per-view="1" space-between="30" free-mode="true">
         @foreach($bassins as $bassin)
             <swiper-slide class="josefin-sans-uniquifier" style="color: #B9EDDD">
                 <h2>{{$bassin->nom_bassin}}</h2>
                 <div class="div-padding">
-                    <canvas id="temperatureChart_{{ $bassin->id }}"></canvas>
+                    <canvas class="canva" id="temperatureChart_{{ $bassin->id }}"></canvas>
+                    <canvas class="canva" id="phChart_{{ $bassin->id }}"></canvas>
+
+
                 </div>
-                <div class="div-padding">
-                    <canvas id="phChart_{{ $bassin->id }}"></canvas>
-                </div>
+                <p>Moyenne de la température</p>
+
+                <p>Moyenne du pH</p>
                 <div>
                     <div style="text-align: center">
                         <p>Seuil de température : <span id="seuilTemperature_{{ $bassin->id }}">{{ $bassin->seuil_temperature }}</span> °C</p>
@@ -147,49 +150,6 @@
                 }
             }
         });
-
-        // Générer des données aléatoires pour plusieurs jours
-        var days = 5; // Nombre de jours
-        var temperatureData_{{ $bassin->id }} = [];
-        var phData_{{ $bassin->id }} = [];
-
-        for (var day = 1; day <= days; day++) {
-            var temperatureDayTotal = 0;
-            var phDayTotal = 0;
-
-            for (var i = 0; i < 24; i++) { // Générer des données pour chaque heure du jour
-                var temperatureValue = Math.random() * (30 - 20) + 20; // Valeurs aléatoires entre 20 et 30 pour la température
-                var phValue = Math.random() * (8.5 - 7) + 7; // Valeurs aléatoires entre 7 et 8.5 pour le pH
-
-                temperatureDayTotal += temperatureValue;
-                phDayTotal += phValue;
-            }
-
-            var temperatureDayAverage = temperatureDayTotal / 24;
-            var phDayAverage = phDayTotal / 24;
-
-            temperatureData_{{ $bassin->id }}.push(temperatureDayAverage);
-            phData_{{ $bassin->id }}.push(phDayAverage);
-        }
-
-        // Générer les labels pour les jours
-        var today = new Date();
-        var labels = [];
-
-        for (var i = 0; i < days; i++) {
-            var date = new Date(today);
-            date.setDate(date.getDate() - (days - 1 - i));
-            labels.push(date.toLocaleDateString());
-        }
-
-        // Ajouter les données moyennes aux graphiques
-        temperatureChart_{{ $bassin->id }}.data.labels = labels; // Labels de jours
-        temperatureChart_{{ $bassin->id }}.data.datasets[0].data = temperatureData_{{ $bassin->id }}; // Données de température
-        temperatureChart_{{ $bassin->id }}.update(); // Mettre à jour le graphique de température
-
-        phChart_{{ $bassin->id }}.data.labels = labels; // Labels de jours
-        phChart_{{ $bassin->id }}.data.datasets[0].data = phData_{{ $bassin->id }}; // Données de pH
-        phChart_{{ $bassin->id }}.update(); // Mettre à jour le graphique de pH
         @endforeach
     </script>
 @endsection

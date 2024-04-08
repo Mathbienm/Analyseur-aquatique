@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mesures', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('bassin_id');
-            $table->float('temperature');
-            $table->float('ph');
-            $table->timestamps();
+        Schema::table('mesures', function (Blueprint $table) {
+            $table->foreign('bassin_id')->references('id')->on('bassins')->onDelete('cascade');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mesures');
+        Schema::table('mesures', function (Blueprint $table) {
+            //
+        });
     }
 };
