@@ -165,7 +165,6 @@
                 phDayTotal += phValue;
             }
 
-            // Calculer la moyenne pour chaque jour
             var temperatureDayAverage = temperatureDayTotal / 24;
             var phDayAverage = phDayTotal / 24;
 
