@@ -16,3 +16,8 @@ Route::get('/updatePh', [\App\Http\Controllers\bassinController::class, 'updateP
 
 Route::get('/createTemperature', [\App\Http\Controllers\arduinoController::class, 'createTemperature']);
 
+Route::get('/mesures/{bassin}', [\App\Http\Controllers\mesuresController::class, 'getMesures'])->name('getMesures');
+
+Route::get('/export/{bassinId}', [\App\Http\Controllers\bassinController::class,'exportBassin'])->name('bassins.exportBassin');
+
+Route::get('/afficher_moyenne_temperature', [\App\Http\Controllers\pageController::class, 'afficherMoyenneTemperature'])->name('afficher.moyenne.temperature');

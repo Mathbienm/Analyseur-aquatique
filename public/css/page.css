@@ -8,7 +8,6 @@ body {
     background-size: cover;
 }
 
-
 swiper-container {
     width: 75%;
 }
@@ -51,13 +50,13 @@ swiper-slide img {
     display: inline-block;
     padding: 10px 20px;
     background-color: #3c444c;
-    color: white;
     text-align: center;
     text-decoration: none;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    color : rgb(185, 237, 221);
 }
 
 .export-csv-button:hover {
@@ -68,7 +67,7 @@ swiper-slide img {
     display: inline-block;
     padding: 10px 20px;
     background-color: #3c444c;
-    color: white;
+    color: rgb(185, 237, 221);
     text-align: center;
     text-decoration: none;
     border: none;
@@ -79,11 +78,6 @@ swiper-slide img {
 
 .modifier-button:hover {
     background-color: #344c5e;
-}
-
-.img_zizi{
-    width: 70px;
-    height: 70px;
 }
 
 /* Style de la fenêtre modale */
@@ -125,3 +119,32 @@ swiper-slide img {
     cursor: pointer;
 }
 
+.canva {
+    width: 100% !important;
+    height: 100% !important;
+ }
+
+.div-padding-moyenne {
+    display: flex;
+}
+
+.padding-temp {
+    padding-left: 12%;
+}
+
+.padding-ph {
+    padding-left: 24%;
+}
+
+.export-csv-2-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3c444c;
+    color: rgb(185, 237, 221);
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

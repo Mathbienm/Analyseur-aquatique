@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bassin;
+use App\Models\Mesure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
@@ -10,16 +11,36 @@ class bassinController extends Controller
 {
     public function export(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        $bassins = Bassin::all();
+        $mesures = Mesure::all();
 
-        $csvFileName = 'bassins.csv';
+        $csvFileName = 'mesures.csv';
         $tempFilePath = storage_path('app/' . Str::random(16) . '.csv');
 
         $handle = fopen($tempFilePath, 'w');
-        fputcsv($handle, array('ID', 'Nom', 'Seuil Température', 'Seuil pH'));
+        fputcsv($handle, array('Numero du bassin', 'Temperature', 'pH', 'date_heure'));
 
-        foreach ($bassins as $bassin) {
-            fputcsv($handle, array($bassin->id, $bassin->nom_bassin, $bassin->seuil_temperature, $bassin->seuil_ph));
+        foreach ($mesures as $mesure) {
+            fputcsv($handle, array($mesure->bassin_id, $mesure->temperature, $mesure->ph, $mesure->created_at));
+        }
+
+        fclose($handle);
+
+        return response()->download($tempFilePath, $csvFileName)->deleteFileAfterSend(true);
+    }
+
+    public function exportBassin(Request $bassinId): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $binaryFileResponse = $this->exportBassin($bassinId);
+        $mesures = Mesure::where('bassin_id', $bassinId)->get();
+
+        $csvFileName = 'mesures_bassin_' . $bassinId . '.csv';
+        $tempFilePath = storage_path('app/' . Str::random(16) . '.csv');
+
+        $handle = fopen($tempFilePath, 'w');
+        fputcsv($handle, array('Numero du bassin', 'Temperature', 'pH', 'date_heure'));
+
+        foreach ($mesures as $mesure) {
+            fputcsv($handle, array($mesure->bassin_id, $mesure->temperature, $mesure->ph, $mesure->created_at));
         }
 
         fclose($handle);

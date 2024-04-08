@@ -16,4 +16,8 @@ class Bassin extends Model
         'ip_arduino',
         'frequence_retrieval',
     ];
+
+    public function mesures() {
+        return $this->hasMany(Mesure::class);
+    }
 }
