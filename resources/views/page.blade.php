@@ -2,8 +2,6 @@
 
 @section('title', 'Page d\'accueil Analyseur aquatique')
 
-
-
 @section('content')
 
     <div class="kodchasan-semibold" style="text-align: center; color: #CEF2E9">
@@ -19,29 +17,22 @@
         </div>
     </div>
 
-
     <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" slides-per-view="3" space-between="30" free-mode="true">
         @foreach($bassins as $bassin)
             <swiper-slide class="josefin-sans-uniquifier" style="color: #B9EDDD">
                 <h2>{{$bassin->nom_bassin}}</h2>
                 <div class="div-padding">
-                    <div class="grid_temp_ph">
-                        <img src="/img/bassin1.jpg" alt="Bassin 1">
-                        <img class="img_zizi" src="/img/temp.png" alt="Bassin 1">
-                    </div>
-                    <div>
-                        <img src="/img/bassin1.jpg" alt="Bassin 1">
-                        <img class="img_zizi" src="/img/ph.png" alt="Bassin 1">
-                    </div>
+                    <canvas id="temperatureChart_{{ $bassin->id }}"></canvas>
                 </div>
                 <div class="div-padding">
+                    <canvas id="phChart_{{ $bassin->id }}"></canvas>
                 </div>
-                <div style="margin-top: 120px">
+                <div>
                     <div style="text-align: center">
-                        <p>Température : <span id="seuilTemperature_{{ $bassin->id }}">{{ $bassin->seuil_temperature }}</span> °C</p>
+                        <p>Seuil de température : <span id="seuilTemperature_{{ $bassin->id }}">{{ $bassin->seuil_temperature }}</span> °C</p>
                     </div>
                     <div style="text-align: center">
-                        <p>pH : <span id="seuilPH_{{ $bassin->id }}">{{ $bassin->seuil_ph }}</span></p>
+                        <p>Seuil de pH : <span id="seuilPH_{{ $bassin->id }}">{{ $bassin->seuil_ph }}</span></p>
                         <a class="modifier-button josefin-sans-uniquifier" data-bassin-id="{{ $bassin->id }}">Modifier</a>
                     </div>
                 </div>
@@ -49,13 +40,12 @@
         @endforeach
     </swiper-container>
 
-
     <div style="text-align: center; margin-top: 20px;">
         <a href="{{ route('bassins.export') }}" class="export-csv-button josefin-sans-uniquifier">Export CSV</a>
     </div>
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         $(document).ready(function() {
             var modal = $("#modal");
@@ -88,7 +78,7 @@
             $("#submitThreshold").click(function() {
                 var newThresholdTemperature = $("#newThresholdTemperature").val();
                 var newThresholdPH = $("#newThresholdPH").val();
-                var bassinId = modal.data('bassin-id'); // Récupérer l'ID du bassin à partir de l'attribut de données de la modal
+                var bassinId = modal.data('bassin-id');
                 var token = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
@@ -115,6 +105,93 @@
                 });
             });
         });
+        @foreach($bassins as $bassin)
+        var temperatureChart_{{ $bassin->id }} = new Chart(document.getElementById("temperatureChart_{{ $bassin->id }}"), {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Température (°C)',
+                    data: [],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var phChart_{{ $bassin->id }} = new Chart(document.getElementById("phChart_{{ $bassin->id }}"), {
+            type: 'line',
+            data: {
+                labels: [], // Les labels des échelles X (ex: les jours)
+                datasets: [{
+                    label: 'pH',
+                    data: [], // Les données de pH moyennes par jour
+                    fill: false,
+                    borderColor: 'rgb(255, 99, 132)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Générer des données aléatoires pour plusieurs jours
+        var days = 5; // Nombre de jours
+        var temperatureData_{{ $bassin->id }} = [];
+        var phData_{{ $bassin->id }} = [];
+
+        for (var day = 1; day <= days; day++) {
+            var temperatureDayTotal = 0;
+            var phDayTotal = 0;
+
+            for (var i = 0; i < 24; i++) { // Générer des données pour chaque heure du jour
+                var temperatureValue = Math.random() * (30 - 20) + 20; // Valeurs aléatoires entre 20 et 30 pour la température
+                var phValue = Math.random() * (8.5 - 7) + 7; // Valeurs aléatoires entre 7 et 8.5 pour le pH
+
+                temperatureDayTotal += temperatureValue;
+                phDayTotal += phValue;
+            }
+
+            // Calculer la moyenne pour chaque jour
+            var temperatureDayAverage = temperatureDayTotal / 24;
+            var phDayAverage = phDayTotal / 24;
+
+            temperatureData_{{ $bassin->id }}.push(temperatureDayAverage);
+            phData_{{ $bassin->id }}.push(phDayAverage);
+        }
+
+        // Générer les labels pour les jours
+        var today = new Date();
+        var labels = [];
+
+        for (var i = 0; i < days; i++) {
+            var date = new Date(today);
+            date.setDate(date.getDate() - (days - 1 - i));
+            labels.push(date.toLocaleDateString());
+        }
+
+        // Ajouter les données moyennes aux graphiques
+        temperatureChart_{{ $bassin->id }}.data.labels = labels; // Labels de jours
+        temperatureChart_{{ $bassin->id }}.data.datasets[0].data = temperatureData_{{ $bassin->id }}; // Données de température
+        temperatureChart_{{ $bassin->id }}.update(); // Mettre à jour le graphique de température
+
+        phChart_{{ $bassin->id }}.data.labels = labels; // Labels de jours
+        phChart_{{ $bassin->id }}.data.datasets[0].data = phData_{{ $bassin->id }}; // Données de pH
+        phChart_{{ $bassin->id }}.update(); // Mettre à jour le graphique de pH
+        @endforeach
     </script>
 @endsection
 

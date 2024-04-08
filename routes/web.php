@@ -11,5 +11,8 @@ Route::get('/bassins/export', [\App\Http\Controllers\bassinController::class, 'e
 Route::get('/modifier/temperature', [\App\Http\Controllers\modifiertempController::class, 'modifier.temperature'])->name('modifier.temperature');
 
 Route::post('/updateThreshold', [\App\Http\Controllers\bassinController::class, 'updateThreshold']);
+
 Route::post('/updatePh', [\App\Http\Controllers\bassinController::class, 'updatePh']);
+
+Route::post('/createTemperature', [\App\Http\Controllers\arduinoController::class, 'createTemperature']);
 

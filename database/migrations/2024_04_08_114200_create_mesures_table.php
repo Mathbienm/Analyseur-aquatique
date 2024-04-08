@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bassins', function (Blueprint $table) {
+        Schema::create('mesures', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_bassin');
-            $table->float('seuil_temperature');
-            $table->float('seuil_ph');
-            $table->string('ip_arduino');
-            $table->string('frequence_retrieval');
+            $table->float('temperature');
+            $table->float('ph');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bassins');
+        Schema::dropIfExists('mesures');
     }
 };
