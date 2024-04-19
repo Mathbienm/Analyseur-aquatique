@@ -82,39 +82,43 @@ swiper-slide img {
 
 /* Style de la fenêtre modale */
 .modal {
-    display: none; /* Par défaut, la fenêtre modale est masquée */
-    position: fixed; /* Positionnement fixe pour la garder au-dessus du contenu */
-    z-index: 5; /* Mettre la fenêtre modale au-dessus de tout le reste */
+    display: none;
+    position: fixed;
+    z-index: 9999;
     left: 0;
     top: 0;
-    width: 100%; /* La fenêtre modale prend toute la largeur de l'écran */
-    height: 100%; /* La fenêtre modale prend toute la hauteur de l'écran */
-    overflow: auto; /* Permettre le défilement si la fenêtre modale est plus grande que l'écran */
-    background-color: rgba(0,0,0,0.4); /* Fond semi-transparent */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    font-family: "Kodchasan", sans-serif;
 }
 
 /* Contenu de la fenêtre modale */
 .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto; /* 15% du haut et centré horizontalement */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 10%; /* Largeur de la fenêtre modale */
+    background-color: #569DAA;
+    margin: 10% auto;
+    padding: 30px;
+    border: 5px solid #3c444c;
+    width: 30%;
     border-radius: 30px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Kodchasan", sans-serif;
 }
 
 /* Bouton de fermeture */
 .close {
-    color: #aaa;
+    color: #3c444c;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    font-family: "Kodchasan", sans-serif;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #333;
     text-decoration: none;
     cursor: pointer;
 }
@@ -129,11 +133,11 @@ swiper-slide img {
 }
 
 .padding-temp {
-    padding-left: 12%;
+    padding-left: 7%;
 }
 
 .padding-ph {
-    padding-left: 24%;
+    padding-left: 18%;
 }
 
 .export-csv-2-button {

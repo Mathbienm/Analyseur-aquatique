@@ -13,7 +13,7 @@ class bassinController extends Controller
     {
         $mesures = Mesure::all();
 
-        $csvFileName = 'mesures.csv';
+        $csvFileName = 'all_mesures.csv';
         $tempFilePath = storage_path('app/' . Str::random(16) . '.csv');
 
         $handle = fopen($tempFilePath, 'w');
@@ -28,10 +28,14 @@ class bassinController extends Controller
         return response()->download($tempFilePath, $csvFileName)->deleteFileAfterSend(true);
     }
 
-    public function exportBassin(Request $bassinId): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function exportBassin(Request $request, $bassinId): \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\JsonResponse
     {
-        $binaryFileResponse = $this->exportBassin($bassinId);
         $mesures = Mesure::where('bassin_id', $bassinId)->get();
+
+        if ($mesures->isEmpty()) {
+            // Retourner un message d'avertissement si aucune mesure n'est disponible pour ce bassin
+            return response()->json(['warning' => "Aucune mesure disponible pour ce bassin. L'exportation du fichier CSV ne contiendra aucune donnée."]);
+        }
 
         $csvFileName = 'mesures_bassin_' . $bassinId . '.csv';
         $tempFilePath = storage_path('app/' . Str::random(16) . '.csv');
@@ -47,6 +51,8 @@ class bassinController extends Controller
 
         return response()->download($tempFilePath, $csvFileName)->deleteFileAfterSend(true);
     }
+
+
 
     public function updateThreshold(Request $request): \Illuminate\Http\JsonResponse
     {

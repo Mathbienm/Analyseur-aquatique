@@ -15,9 +15,10 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <p style="padding: 5px">Nouveau seuil de température : <input type="number" id="newThresholdTemperature"></p>
-            <p style="padding-bottom: 5px">Nouveau seuil de pH : <input type="number" id="newThresholdPH"></p>
-            <button id="submitThreshold">Valider</button>
+            <p style="padding: 5px">Nouveau seuil de température : <label
+                    for="newThresholdTemperature"></label><input type="number" id="newThresholdTemperature" style="width: 10%;"></p>
+            <p style="padding-bottom: 5px">Nouveau seuil de pH : <label for="newThresholdPH"></label><input type="number" id="newThresholdPH" style="width: 10%;"></p>
+            <button style="padding: 5px;background-color: skyblue;border-radius: 10px;" id="submitThreshold" >Valider</button>
         </div>
     </div>
 
@@ -65,14 +66,41 @@
             btns.click(function() {
                 var btn = $(this);
                 var bassinId = btn.data('bassin-id');
-                var seuilTemperature = $("#seuilTemperature_" + bassinId).text();
-                var seuilPH = $("#seuilPH_" + bassinId).text();
+                var seuilTemperatureElement = $("#seuilTemperature_" + bassinId);
+                var seuilPHElement = $("#seuilPH_" + bassinId);
+                var seuilTemperature = seuilTemperatureElement.text();
+                var seuilPH = seuilPHElement.text();
 
                 $("#newThresholdTemperature").val(seuilTemperature);
                 $("#newThresholdPH").val(seuilPH);
                 modal.data('bassin-id', bassinId);
-
                 modal.css("display", "block");
+
+                $("#submitThreshold").unbind('click').click(function() {
+                    var newThresholdTemperature = $("#newThresholdTemperature").val();
+                    var newThresholdPH = $("#newThresholdPH").val();
+
+                    seuilTemperatureElement.text(newThresholdTemperature);
+                    seuilPHElement.text(newThresholdPH);
+                    modal.css("display", "none");
+
+                    var bassinId = modal.data('bassin-id');
+                    $.ajax({
+                        url: "{{ route('updateThreshold') }}",
+                        type: "GET",
+                        data: {
+                            bassinId: bassinId,
+                            newThresholdTemperature: newThresholdTemperature,
+                            newThresholdPH: newThresholdPH
+                        },
+                        success: function(response) {
+                            console.log("Nouvelles valeurs des seuils enregistrées avec succès !");
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Une erreur est survenue lors de l'enregistrement des nouvelles valeurs des seuils : ", error);
+                        }
+                    });
+                });
             });
 
             span.click(function() {
@@ -84,124 +112,111 @@
                     modal.css("display", "none");
                 }
             });
+        });
 
-            @foreach($bassins as $bassin)
-            var temperatureChart_{{ $bassin->id }} = new Chart(document.getElementById("temperatureChart_{{ $bassin->id }}"), {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Température (°C)',
-                        data: [],
-                        fill: false,
-                        borderColor: 'rgba(75, 192, 192)',
-                        tension: 0.1,
-                        color: 'rgba(255,255,255)',
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: 'white'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Valeur des températures',
-                                color: 'rgba(255,255,255)'
-                            }
+        @foreach($bassins as $bassin)
+        var temperatureChart_{{ $bassin->id }} = new Chart(document.getElementById("temperatureChart_{{ $bassin->id }}"), {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Température (°C)',
+                    data: [],
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192)',
+                    tension: 0.1,
+                    color: 'rgba(255,255,255)',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
                         },
-                        x: {
-                            grid: {
-                                color: 'rgba(255,255,255)'
-                            },
-                            ticks: {
-                                color: 'rgba(255,255,255)'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Temps',
-                                color: 'rgba(255,255,255)'
-                            }
+                        title: {
+                            display: true,
+                            text: 'Valeur des températures',
+                            color: 'rgba(255,255,255)'
                         }
                     },
-                }
-            });
-
-            var phChart_{{ $bassin->id }} = new Chart(document.getElementById("phChart_{{ $bassin->id }}"), {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'pH',
-                        data: [],
-                        fill: false,
-                        borderColor: 'rgb(157,24,24)',
-                        tension: 0.1,
-                        color: 'rgba(255,255,255)',
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: 'white'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Valeur du pH',
-                                color: 'rgba(255,255,255)'
-                            }
+                    x: {
+                        grid: {
+                            color: 'rgba(255,255,255)'
                         },
-                        x: {
-                            grid: {
-                                color: 'rgba(255,255,255)'
-                            },
-                            ticks: {
-                                color: 'rgba(255,255,255)'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Temps',
-                                color: 'rgb(255,255,255)'
-                            }
+                        ticks: {
+                            color: 'rgba(255,255,255)'
+                        },
+                    }
+                },
+            }
+        });
+
+        var phChart_{{ $bassin->id }} = new Chart(document.getElementById("phChart_{{ $bassin->id }}"), {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'pH',
+                    data: [],
+                    fill: false,
+                    borderColor: 'rgb(157,24,24)',
+                    tension: 0.1,
+                    color: 'rgba(255,255,255)',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Valeur du pH',
+                            color: 'rgba(255,255,255)'
                         }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255,255,255)'
+                        },
+                        ticks: {
+                            color: 'rgba(255,255,255)'
+                        },
                     }
                 }
-            });
-            @endforeach
-
-            @foreach($bassins as $bassin)
-            $.ajax({
-                url: "{{ route('getMesures', ['bassin' => $bassin->id]) }}?limit=30",
-                type: "GET",
-                success: function(response) {
-                    var temperatures = response.temperatures;
-                    var phValues = response.phValues;
-                    var labels = response.labels.map(function(dateString) {
-                        return moment(dateString, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-                    });
-
-                    // Mettre à jour les graphiques avec les nouvelles données
-                    temperatureChart_{{ $bassin->id }}.data.datasets[0].data = temperatures;
-                    phChart_{{ $bassin->id }}.data.datasets[0].data = phValues;
-                    temperatureChart_{{ $bassin->id }}.data.labels = labels;
-                    phChart_{{ $bassin->id }}.data.labels = labels;
-                    temperatureChart_{{ $bassin->id }}.update();
-                    phChart_{{ $bassin->id }}.update();
-                },
-                error: function(xhr, status, error) {
-                    console.error("Une erreur est survenue lors de la récupération des mesures pour le bassin {{ $bassin->id }} : ", error);
-                }
-            });
-
-            @endforeach
-
+            }
         });
-    </script>
+        @endforeach
 
+        @foreach($bassins as $bassin)
+        $.ajax({
+            url: "{{ route('getMesures', ['bassin' => $bassin->id]) }}?limit=30",
+            type: "GET",
+            success: function(response) {
+                var temperatures = response.temperatures;
+                var phValues = response.phValues;
+                var labels = response.labels.map(function(dateString) {
+                    return moment(dateString, 'DD-MM-YYYY HH:mm:ss').format('DD-MM-YYYY HH:mm:ss');
+                });
+
+                // Mettre à jour les graphiques avec les nouvelles données
+                temperatureChart_{{ $bassin->id }}.data.datasets[0].data = temperatures;
+                phChart_{{ $bassin->id }}.data.datasets[0].data = phValues;
+                temperatureChart_{{ $bassin->id }}.data.labels = labels;
+                phChart_{{ $bassin->id }}.data.labels = labels;
+                temperatureChart_{{ $bassin->id }}.update();
+                phChart_{{ $bassin->id }}.update();
+            },
+            error: function(xhr, status, error) {
+                console.error("Une erreur est survenue lors de la récupération des mesures pour le bassin {{ $bassin->id }} : ", error);
+            }
+        });
+        @endforeach
+    </script>
 @endsection
 
 

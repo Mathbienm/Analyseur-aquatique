@@ -17,7 +17,8 @@ class Bassin extends Model
         'frequence_retrieval',
     ];
 
-    public function mesures() {
+    public function mesures(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(Mesure::class);
     }
 }

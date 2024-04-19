@@ -10,7 +10,7 @@ Route::get('/bassins/export', [\App\Http\Controllers\bassinController::class, 'e
 
 Route::get('/modifier/temperature', [\App\Http\Controllers\modifiertempController::class, 'modifier.temperature'])->name('modifier.temperature');
 
-Route::get('/updateThreshold', [\App\Http\Controllers\bassinController::class, 'updateThreshold']);
+Route::get('/updateThreshold', [\App\Http\Controllers\bassinController::class, 'updateThreshold'])->name('updateThreshold');
 
 Route::get('/updatePh', [\App\Http\Controllers\bassinController::class, 'updatePh']);
 
