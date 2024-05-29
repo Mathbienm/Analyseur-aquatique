@@ -32,8 +32,8 @@
 
                 </div>
                 <div class="div-padding-moyenne">
-                    <p class="padding-temp">Moyenne de la température : {{ $moyenneTemperature }}</p>
-                    <p class="padding-ph">Moyenne du pH : {{ $bassin->moyennePh }}</p>
+                    <p class="padding-temp">Moyenne de la température journalière : {{ $moyenneTemperature }}</p>
+                    <p class="padding-ph">Moyenne du pH journalière : {{ $bassin->moyennePh }}</p>
                 </div>
 
                 <div>
@@ -200,7 +200,7 @@
                 var temperatures = response.temperatures;
                 var phValues = response.phValues;
                 var labels = response.labels.map(function(dateString) {
-                    return moment(dateString, 'DD-MM-YYYY HH:mm:ss').format('DD-MM-YYYY HH:mm:ss');
+                    return moment(dateString, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY HH:mm:ss');
                 });
 
                 // Mettre à jour les graphiques avec les nouvelles données

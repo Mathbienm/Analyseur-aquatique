@@ -28,7 +28,6 @@ class AlertMail extends Mailable
         $this->subject = $subject;
         $this->pool = $pool;
         $this->threshold = $threshold;
-
         $this->content = "Le seuil de la " . ($threshold == 'temperature' ? 'température' : 'pH') . " est dépassé dans le bassin $pool, veuillez réguler vos niveaux.";
     }
 
@@ -37,7 +36,7 @@ class AlertMail extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this->subject($this->subject)
             ->markdown('emails.alert', [

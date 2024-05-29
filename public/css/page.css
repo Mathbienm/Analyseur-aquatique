@@ -46,6 +46,17 @@ swiper-slide img {
     gap: 10px;
 }
 
+/* Nouvelles règles si la fenêtre fait au plus 1024px de large */
+@media screen and (max-width: 1024px) {
+    .div-padding{
+        padding-inline: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-direction: column;
+    }
+}
+
 .export-csv-button {
     display: inline-block;
     padding: 10px 20px;

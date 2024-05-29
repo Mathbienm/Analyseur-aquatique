@@ -11,19 +11,18 @@ class pageController extends Controller
     public function page(){
         $bassins = Bassin::all();
         foreach ($bassins as $bassin) {
-            $bassin->moyenneTemp = (int) round($bassin->mesures()->whereDate('created_at', now()->format('d-m-Y'))->avg('mesures.temperature')) ?? 0;
-            $bassin->moyennePh = (int) round($bassin->mesures()->whereDate('created_at', now()->format('d-m-Y'))->avg('mesures.ph')) ?? 0;
+            $bassin->moyenneTemp = (int) round($bassin->mesures()->whereDate('created_at', now()->format('Y-m-d'))->avg('mesures.temperature')) ?? 0;
+            $bassin->moyennePh = (int) round($bassin->mesures()->whereDate('created_at', now()->format('Y-m-d'))->avg('mesures.ph')) ?? 0;
         }
 
-        // Récupération de la moyenne de température pour la journée actuelle
-        $moyenneTemperature = (int) round(Mesure::whereDate('created_at', now()->format('d-m-Y'))->avg('temperature')) ?? 0;
+        $moyenneTemperature = (int) round(Mesure::whereDate('created_at', now()->format('Y-m-d'))->avg('temperature')) ?? 0;
 
         return view('page', compact('bassins', 'moyenneTemperature'));
     }
 
     public function afficherMoyenneTemperature()
     {
-        $dateActuelle = now()->format('d-m-Y');
+        $dateActuelle = now()->format('Y-m-d');
         $moyenneTemperature = Mesure::whereDate('created_at', $dateActuelle)->avg('temperature');
 
         if ($moyenneTemperature !== null) {

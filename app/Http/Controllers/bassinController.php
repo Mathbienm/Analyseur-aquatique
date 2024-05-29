@@ -12,19 +12,15 @@ class bassinController extends Controller
     public function export(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $mesures = Mesure::all();
-
         $csvFileName = 'all_mesures.csv';
         $tempFilePath = storage_path('app/' . Str::random(16) . '.csv');
-
         $handle = fopen($tempFilePath, 'w');
-        fputcsv($handle, array('Numero du bassin', 'Temperature', 'pH', 'date_heure'));
-
+        $delimiter = ';';
+        fputcsv($handle, array('Numero du bassin', 'Temperature', 'pH', 'date_heure'), $delimiter);
         foreach ($mesures as $mesure) {
-            fputcsv($handle, array($mesure->bassin_id, $mesure->temperature, $mesure->ph, $mesure->created_at));
+            fputcsv($handle, array($mesure->bassin_id, $mesure->temperature, $mesure->ph, $mesure->created_at), $delimiter);
         }
-
         fclose($handle);
-
         return response()->download($tempFilePath, $csvFileName)->deleteFileAfterSend(true);
     }
 
@@ -39,19 +35,15 @@ class bassinController extends Controller
 
         $csvFileName = 'mesures_bassin_' . $bassinId . '.csv';
         $tempFilePath = storage_path('app/' . Str::random(16) . '.csv');
-
         $handle = fopen($tempFilePath, 'w');
-        fputcsv($handle, array('Numero du bassin', 'Temperature', 'pH', 'date_heure'));
-
+        $delimiter = ';';
+        fputcsv($handle, array('Numero du bassin', 'Temperature', 'pH', 'date_heure'), $delimiter);
         foreach ($mesures as $mesure) {
-            fputcsv($handle, array($mesure->bassin_id, $mesure->temperature, $mesure->ph, $mesure->created_at));
+            fputcsv($handle, array($mesure->bassin_id, $mesure->temperature, $mesure->ph, $mesure->created_at), $delimiter);
         }
-
         fclose($handle);
-
         return response()->download($tempFilePath, $csvFileName)->deleteFileAfterSend(true);
     }
-
 
 
     public function updateThreshold(Request $request): \Illuminate\Http\JsonResponse
