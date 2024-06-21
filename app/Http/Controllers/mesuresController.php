@@ -12,7 +12,7 @@ class mesuresController extends Controller
         $limit = $request->input('limit', 30);
 
         $mesures = Mesure::where('bassin_id', $bassinId)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->limit($limit)
             ->get();
 
