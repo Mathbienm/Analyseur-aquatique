@@ -203,7 +203,7 @@
                 var phValues = response.phValues;
                 var labels = response.labels.map(function(dateString) {
                     let date = moment(dateString, 'YYYY-MM-DD HH:mm:ss');
-                    date = date.addHours(2)
+                    date = date.add(2, 'hours')
                     return date.format('DD-MM-YYYY HH:mm:ss');
                 });
 
