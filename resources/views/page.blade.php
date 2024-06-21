@@ -61,6 +61,7 @@
     <script src="{{ asset('js/moment.js') }}"></script>
     <script>
         $(document).ready(function() {
+            moment().tz("Europe/Paris").format();
             var modal = $("#modal");
             var span = $(".close");
             var btns = $(".modifier-button");
