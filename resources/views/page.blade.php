@@ -1,7 +1,9 @@
 @extends('layouts.head')
 
 @section('title', 'Page d\'accueil Analyseur aquatique')
-
+@section('meta')
+    <meta http-equiv="refresh" content="60">
+@endsection
 @section('content')
 
     <style>

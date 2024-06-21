@@ -11,7 +11,7 @@ class arduinoController extends Controller
 {
     public function createTemperature(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($request->get('temperature') && $request->get('ph') && $request->get('bassin_id')) {
+        if ($request->get('temperature') && $request->get('ph') && $request->get('bassin_id') && $request->get('token') && $request->get('token') == env('TOKEN'))  {
             $temperature = $request->input('temperature');
             $ph = $request->input('ph');
             $ip = $request->ip();
