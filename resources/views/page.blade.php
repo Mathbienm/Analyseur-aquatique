@@ -61,7 +61,6 @@
     <script src="{{ asset('js/moment.js') }}"></script>
     <script>
         $(document).ready(function() {
-            moment().tz("Europe/Paris").format();
             var modal = $("#modal");
             var span = $(".close");
             var btns = $(".modifier-button");
@@ -203,7 +202,7 @@
                 var temperatures = response.temperatures;
                 var phValues = response.phValues;
                 var labels = response.labels.map(function(dateString) {
-                    return moment(dateString, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY HH:mm:ss');
+                    return moment(dateString, 'YYYY-MM-DD HH:mm:ss').tz("Europe/Paris").format('DD-MM-YYYY HH:mm:ss');
                 });
 
                 // Mettre à jour les graphiques avec les nouvelles données
