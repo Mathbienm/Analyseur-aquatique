@@ -59,7 +59,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('js/moment.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js"></script>
     <script>
         $(document).ready(function() {
             var modal = $("#modal");
@@ -203,7 +202,9 @@
                 var temperatures = response.temperatures;
                 var phValues = response.phValues;
                 var labels = response.labels.map(function(dateString) {
-                    return moment(dateString, 'YYYY-MM-DD HH:mm:ss').tz("Europe/Paris").format('DD-MM-YYYY HH:mm:ss');
+                    let date = moment(dateString, 'YYYY-MM-DD HH:mm:ss');
+                    date = date.addHours(2)
+                    return date.format('DD-MM-YYYY HH:mm:ss');
                 });
 
                 // Mettre à jour les graphiques avec les nouvelles données
