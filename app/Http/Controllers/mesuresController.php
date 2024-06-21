@@ -13,8 +13,9 @@ class mesuresController extends Controller
 
         $mesures = Mesure::where('bassin_id', $bassinId)
             ->orderBy('created_at', 'asc')
-            ->offset($limit)
             ->get();
+
+        $mesures = $mesures->slice(-30);
 
         // Formatage des données
         $temperatures = $mesures->pluck('temperature')->toArray();
