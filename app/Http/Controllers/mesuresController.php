@@ -13,7 +13,7 @@ class mesuresController extends Controller
 
         $mesures = Mesure::where('bassin_id', $bassinId)
             ->orderBy('created_at', 'asc')
-            ->limit($limit)
+            ->offset($limit)
             ->get();
 
         // Formatage des données
